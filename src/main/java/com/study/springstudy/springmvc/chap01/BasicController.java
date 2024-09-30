@@ -1,7 +1,6 @@
-package com.study.springstudy.chap01;
+package com.study.springstudy.springmvc.chap01;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.eclipse.tags.shaded.org.apache.xalan.templates.ElemWhen;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
