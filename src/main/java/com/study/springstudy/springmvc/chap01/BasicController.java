@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/spring/chap01")
 public class BasicController {
 
+    public BasicController() {
+        System.out.println("Basic Controller 생성됨!");
+    }
+
     // URL: /spring/chap01/hello
     @RequestMapping("/hello")
     public String hello() {
