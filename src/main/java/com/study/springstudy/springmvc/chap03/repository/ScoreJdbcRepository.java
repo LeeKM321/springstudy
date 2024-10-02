@@ -94,6 +94,18 @@ public class ScoreJdbcRepository implements ScoreRepository {
         jdbcTemplate.update(sql, stuNum);
     }
 
+    @Override
+    public void update(Score score) {
+        String sql = "UPDATE score" +
+                " SET kor=?, eng=?, math=?, total=?, average=?, grade=?" +
+                " WHERE stu_num=?";
+
+        jdbcTemplate.update(sql, score.getKor(), score.getEng(),
+                score.getMath(), score.getTotal(), score.getAverage(),
+                score.getGrade().toString(), score.getStuNum());
+
+    }
+
 
 }
 

@@ -95,6 +95,14 @@ public class ScoreController {
     // 서비스, 레파지토리 계층과 연계하여 update 처리를 진행해 주세요.
     // 수정이 완료된 후 사용자에게 응답할 페이지는
     // 최신 수정 내용이 반영된 detail 페이지 입니다. -> redirect
+    @PostMapping("/modify")
+    public String modify(ScorePostDTO dto, // kor, eng, math는 dto로 받고
+                         @RequestParam int stuNum) { // stuNum은 dto가 못받으니까 따로 받음.
+        service.update(dto, stuNum);
+
+        return "redirect:/score/detail?stuNum=" + stuNum;
+    }
+
 
     private void retrieve(int stuNum, Model model) {
         Score score = service.findOne(stuNum);

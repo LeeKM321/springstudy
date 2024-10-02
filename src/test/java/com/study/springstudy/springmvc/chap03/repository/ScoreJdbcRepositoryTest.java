@@ -34,7 +34,7 @@ class ScoreJdbcRepositoryTest {
         // given - 테스트에 필요한 값을 세팅
 
         // when - 테스트 주요 코드 실행 (테스트 실행 목표)
-        List<Score> scoreList = repository.findAll();
+        List<Score> scoreList = repository.findAll("num");
         System.out.println("scoreList = " + scoreList);
 
         // then - 테스트 결과를 검증 (Assertion: 단언)
@@ -70,6 +70,27 @@ class ScoreJdbcRepositoryTest {
 
         // then
         assertNull(score);
+    }
+
+    @Test
+    @DisplayName("7번 학생의 국어, 수학점수를 수정 후, 다시 조회하면 수정된 데이터가 조회되어야 한다.")
+    void updateTest() {
+        // given
+        int stuNum = 7, kor = 76, math = 88;
+        Score score = repository.findOne(stuNum);
+        ScorePostDTO dto
+                = new ScorePostDTO(score.getStuName(), kor, score.getEng(), math);
+        System.out.println("dto = " + dto);
+
+        // when
+        Score score2 = new Score(dto);
+        score2.setStuNum(stuNum); // 번호 초기화!
+        repository.update(score2);
+
+        // then
+        Score changeScore = repository.findOne(stuNum);
+        System.out.println("changeScore = " + changeScore);
+        assertNotEquals(score.getTotal(), changeScore.getTotal());
     }
 
 

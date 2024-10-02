@@ -20,6 +20,15 @@ public interface ScoreRepository {
     // 저장소에서 데이터 삭제하기
     void delete(int stuNum);
 
+    // 저장소에서 데이터 수정하기
+    void update(Score score);
+
+    /*
+    UPDATE score
+    SET kor=?, eng=?, math=?, total=?, average=?, grade=?
+    WHERE stu_num=?
+     */
+
 }
 
 

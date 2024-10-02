@@ -55,6 +55,12 @@ public class ScoreService {
     public void remove(int stuNum) {
         repository.delete(stuNum);
     }
+
+    public void update(ScorePostDTO dto, int stuNum) {
+        Score changeScore = new Score(dto);
+        changeScore.setStuNum(stuNum); // 학번 넣어야 합니다!!!!
+        repository.update(changeScore);
+    }
 }
 
 
