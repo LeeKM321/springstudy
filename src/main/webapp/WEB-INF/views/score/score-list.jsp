@@ -86,24 +86,45 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
         <hr />
 
-        <ul class="score-list">
-          <li class="list-header">
-            <div class="count">총 학생 수: ${sList.size()}명</div>
-            <div class="sort-link-group">
-              <div><a href="/score/list?sort=num">학번순</a></div>
-              <div><a href="/score/list?sort=name">이름순</a></div>
-              <div><a href="/score/list?sort=avg">평균순</a></div>
-            </div>
-          </li>
-          <c:forEach var="s" items="${sList}">
-            <li>
-              # 학번: ${s.stuNum}, 이름: <a href="#">${s.maskingName}</a>, 평균:
-              ${s.average}점, 학점: ${s.grade}
-              <a class="del-btn" href="#">삭제</a>
+        <form action="/score/remove" method="post" name="removeForm">
+          <ul class="score-list">
+            <li class="list-header">
+              <div class="count">총 학생 수: ${sList.size()}명</div>
+              <div class="sort-link-group">
+                <div><a href="/score/list?sort=num">학번순</a></div>
+                <div><a href="/score/list?sort=name">이름순</a></div>
+                <div><a href="/score/list?sort=avg">평균순</a></div>
+              </div>
             </li>
-          </c:forEach>
-        </ul>
+            <c:forEach var="s" items="${sList}">
+              <li>
+                # 학번: ${s.stuNum}, 이름:
+                <a href="/score/detail?stuNum=${s.stuNum}">${s.maskingName}</a>,
+                평균: ${s.average}점, 학점: ${s.grade}
+                <a class="del-btn" href="${s.stuNum}">삭제</a>
+              </li>
+            </c:forEach>
+            <input type="hidden" name="stuNum" id="stu-num" />
+          </ul>
+        </form>
       </section>
     </div>
+
+    <script>
+      // 삭제 버튼 클릭 이벤트 처리
+      const $ul = document.querySelector('.score-list');
+
+      $ul.addEventListener('click', (e) => {
+        // 삭제 버튼이 아니라면 이벤트 강제 종료
+        if (!e.target.matches('.del-btn')) return;
+
+        e.preventDefault(); // a 태그의 고유기능 중지.
+
+        if (confirm('정말로 삭제하시겠습니까?')) {
+          // a태그에 미리 세팅해 놓은 href에 작성된 학생 번호를 얻어오자.
+          const stuNum = e.target.getAttribute('href');
+        }
+      });
+    </script>
   </body>
 </html>
