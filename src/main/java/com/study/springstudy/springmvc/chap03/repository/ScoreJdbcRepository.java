@@ -54,8 +54,20 @@ public class ScoreJdbcRepository implements ScoreRepository {
     }
 
     @Override
-    public List<Score> findAll() {
+    public List<Score> findAll(String sort) {
         String sql = "SELECT * FROM score";
+
+        switch (sort) {
+            case "num":
+                sql += " ORDER BY stu_num";
+                break;
+            case "name":
+                sql += " ORDER BY stu_name";
+                break;
+            case "avg":
+                sql += " ORDER BY average DESC";
+                break;
+        }
 
         // 여러 행이 조회될 때는 query()를 호출.
         // sql, RowMapper 인터페이스를 구현한 객체를 전달.

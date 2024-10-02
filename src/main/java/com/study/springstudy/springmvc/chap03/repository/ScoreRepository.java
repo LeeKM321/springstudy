@@ -12,7 +12,7 @@ public interface ScoreRepository {
     void save(Score score);
 
     // 저장소에서 데이터 전체조회하기
-    List<Score> findAll();
+    List<Score> findAll(String sort);
 
     // 저장소에서 데이터 개별조회하기
     Score findOne(int stuNum);

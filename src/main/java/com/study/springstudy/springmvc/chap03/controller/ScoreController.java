@@ -1,6 +1,7 @@
 package com.study.springstudy.springmvc.chap03.controller;
 
 import com.study.springstudy.springmvc.chap03.dto.ScorePostDTO;
+import com.study.springstudy.springmvc.chap03.dto.ScoreResponseDTO;
 import com.study.springstudy.springmvc.chap03.entity.Score;
 import com.study.springstudy.springmvc.chap03.repository.ScoreJdbcRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
     # 요청 URL
@@ -41,8 +44,28 @@ public class ScoreController {
                        Model model) {
         System.out.println("/score/list: GET!");
 
-        List<Score> scoreList = repository.findAll();
-        model.addAttribute("sList", scoreList);
+        List<Score> scoreList = repository.findAll(sort);
+
+        /*
+        컨트롤러는 데이터베이스에서 성적정보 리스트를
+        조회해 오기를 원하고 있다.
+        그런데 데이터베이스는 민감한 정보까지 모두 조회한다.
+        그리고 컬럼명도 그대로 노출하기 때문에
+        이 모든것을 숨기는 처리를 하고 싶다. -> response용 DTO를 생성하자!
+        */
+//        List<ScoreResponseDTO> dtoList = new ArrayList<>();
+//        for (Score score : scoreList) {
+//            ScoreResponseDTO dto = new ScoreResponseDTO(score);
+//            dtoList.add(dto);
+//        }
+
+        List<ScoreResponseDTO> dtoList = scoreList
+                .stream()
+                .map(score -> new ScoreResponseDTO(score))
+                .collect(Collectors.toList());
+
+
+        model.addAttribute("sList", dtoList);
 
         return "score/score-list";
     }
@@ -59,7 +82,6 @@ public class ScoreController {
         // redirect를 통해 /score/list라는 요청이 다시 들어오게끔 유도. ->
         return "redirect:/score/list";
     }
-
 
 
 }
