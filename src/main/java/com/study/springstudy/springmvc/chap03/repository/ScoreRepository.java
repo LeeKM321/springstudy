@@ -15,7 +15,22 @@ public interface ScoreRepository {
     List<Score> findAll();
 
     // 저장소에서 데이터 개별조회하기
+    Score findOne(int stuNum);
 
     // 저장소에서 데이터 삭제하기
+    void delete(int stuNum);
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
