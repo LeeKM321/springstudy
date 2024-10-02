@@ -38,7 +38,7 @@ public class ScoreController {
         System.out.println("/score/register: POST!");
         System.out.println("dto = " + dto);
 
-
+        return null;
     }
 
 

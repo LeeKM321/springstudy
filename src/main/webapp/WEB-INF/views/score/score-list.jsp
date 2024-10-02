@@ -74,7 +74,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
       <section class="score">
         <h1>시험 점수 등록</h1>
         <form action="/score/register" method="POST">
-          <label> # 이름: <input type="text" name="name" /> </label>
+          <label> # 이름: <input type="text" name="stuName" /> </label>
           <label> # 국어: <input type="text" name="kor" /> </label>
           <label> # 영어: <input type="text" name="eng" /> </label>
           <label> # 수학: <input type="text" name="math" /> </label>

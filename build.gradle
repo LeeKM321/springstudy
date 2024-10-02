@@ -39,6 +39,8 @@ dependencies {
 	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api'
 	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'
 
+	// Spring Framework에서 JDBC를 좀 더 쉽게 사용할 수 있게 해주는 라이브러리
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
 
 }
