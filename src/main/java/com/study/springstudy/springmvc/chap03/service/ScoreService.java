@@ -51,6 +51,10 @@ public class ScoreService {
     public Score findOne(int stuNum) {
         return repository.findOne(stuNum);
     }
+
+    public void remove(int stuNum) {
+        repository.delete(stuNum);
+    }
 }
 
 

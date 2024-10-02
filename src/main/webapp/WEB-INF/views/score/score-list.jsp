@@ -113,16 +113,25 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <script>
       // 삭제 버튼 클릭 이벤트 처리
       const $ul = document.querySelector('.score-list');
+      console.log($ul);
 
       $ul.addEventListener('click', (e) => {
         // 삭제 버튼이 아니라면 이벤트 강제 종료
         if (!e.target.matches('.del-btn')) return;
 
         e.preventDefault(); // a 태그의 고유기능 중지.
+        console.log('삭제 이벤트 클릭 발생!');
 
         if (confirm('정말로 삭제하시겠습니까?')) {
           // a태그에 미리 세팅해 놓은 href에 작성된 학생 번호를 얻어오자.
           const stuNum = e.target.getAttribute('href');
+
+          // hidden으로 숨겨진 input 태그의 value로 stuNum을 넣어주자.
+          document.getElementById('stu-num').value = stuNum;
+
+          // 폼 태그 submit
+          // form태그는 name으로 바로 지목이 가능.
+          document.removeForm.submit();
         }
       });
     </script>

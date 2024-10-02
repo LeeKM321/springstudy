@@ -67,10 +67,38 @@ public class ScoreController {
     public String detail(@RequestParam int stuNum,
                          Model model) {
         System.out.println("/score/detail: GET!!");
-        Score score = service.findOne(stuNum);
-
-        model.addAttribute("stu", score);
+        retrieve(stuNum, model);
         return "score/score-detail";
+    }
+
+    // 성적 삭제 요청
+    @PostMapping("/remove")
+    public String remove(@RequestParam int stuNum) {
+        System.out.println("/score/remove: POST!");
+        System.out.println("stuNum = " + stuNum);
+
+        service.remove(stuNum);
+        return "redirect:/score/list";
+    }
+
+    // 수정 페이지로 이동 요청
+    @GetMapping("/modify")
+    public String modify(@RequestParam int stuNum,
+                         Model model) {
+        System.out.println("/score/modify: GET!!");
+        retrieve(stuNum, model);
+
+        return "score/score-modify";
+    }
+
+    // 진짜 수정 처리 요청
+    // 서비스, 레파지토리 계층과 연계하여 update 처리를 진행해 주세요.
+    // 수정이 완료된 후 사용자에게 응답할 페이지는
+    // 최신 수정 내용이 반영된 detail 페이지 입니다. -> redirect
+
+    private void retrieve(int stuNum, Model model) {
+        Score score = service.findOne(stuNum);
+        model.addAttribute("stu", score);
     }
 
 
