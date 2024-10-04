@@ -1,13 +1,13 @@
 package com.study.springstudy.springmvc.chap04.controller;
 
+import com.study.springstudy.springmvc.chap04.dto.BoardDetailResponseDTO;
 import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDTO;
+import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDTO;
 import com.study.springstudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +27,8 @@ import java.util.List;
 - res data: x
 
 3. 글쓰기 등록 요청(/board/write: POST)
-- req data: writer, title, content -> 문자열 타입
+- req data: writer, title, content -> 문자열 타입 (BoardWriteRequestDTO)
+            DTO를 board로 바꿔서 mapper에게 전달해야 함. -> Board의 생성자를 이용.
 - response: 글 목록 페이지 요청이 다시 들어오게끔 (redirect)
 - res data: x
 
@@ -36,8 +37,8 @@ import java.util.List;
 - response: 글 목록 페이지 요청이 다시 들어오게끔 (redirect)
 - res data: x
 
-5. 글 상세 보기 요청(/board/detail: GET)
-- req data: boardNo -> int
+5. 글 상세 보기 요청(/board/detail/글번호: GET)
+- req data: url 경로에 글번호가 묻어서 옴.
 - response: chap04/detail.jsp
 - res data: model에 특정 게시글 정보 담아서 리턴
 
@@ -62,6 +63,21 @@ public class BoardController {
     @GetMapping("/write")
     public String write() {
         return "chap04/write";
+    }
+
+    @PostMapping("/write")
+    public String write(BoardWriteRequestDTO dto) {
+        System.out.println("dto = " + dto);
+        boardService.register(dto);
+        return "redirect:/board/list";
+    }
+
+    // /board/detail/23
+    @GetMapping("/detail/{bno}")
+    public String detail(@PathVariable int bno, Model model) {
+        BoardDetailResponseDTO dto = boardService.getDetail(bno);
+        model.addAttribute("b", dto);
+        return "chap04/detail";
     }
 
 }

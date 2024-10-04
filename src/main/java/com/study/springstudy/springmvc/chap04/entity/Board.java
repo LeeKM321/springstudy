@@ -11,6 +11,7 @@ CREATE TABLE tbl_board (
 );
  */
 
+import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,12 @@ public class Board {
     private LocalDateTime regDate;
     private String writer;
 
+    public Board(BoardWriteRequestDTO dto) {
+        this.writer = dto.getWriter();
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+//        this.regDate = LocalDateTime.now();
+    }
 }
 
 

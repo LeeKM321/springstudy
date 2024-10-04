@@ -49,7 +49,7 @@
         <div class="card-container">
             <c:forEach var="b" items="${bList}">
                 <div class="card-wrapper">
-                    <section class="card" data-bno="#">
+                    <section class="card" data-bno="${b.boardNo}">
                         <div class="card-title-wrapper">
                             <h2 class="card-title">${b.shortTitle}</h2>
                             <div class="time-view-wrapper">
@@ -111,10 +111,25 @@
             </div>
         </div>
     </div>
+    
     <script>
 
         // 카드 형태의 게시물들을 감싸고 있는 부모 요소 취득
         const $cardContainer = document.querySelector('.card-container');
+
+        $cardContainer.addEventListener('click', e => {
+            if (e.target.matches('.card-container')) return;
+            
+            // section 태그에 붙은 글 번호를 읽어오자.
+            // 이벤트가 발생된 타겟이 지금 계속 달라지고 있다. -> 고정된 상대 경로로는 번호를 얻기 힘들다.
+            // $item.closest(특정 요소 선택자) -> $item에서 가장 가까운 특정 요소를 취득하게 해 줌.
+            const bno = e.target.closest('section.card').dataset.bno;
+            console.log('글 번호: ', bno);            
+
+            // 서버에 요청 보내기
+            location.href='/board/detail/' + bno;
+            
+        })
 
 
       //========== 게시물 목록 스크립트 ============//
@@ -151,7 +166,6 @@
         window.location.href = '/board/write';
       };
     </script>
-
 
 
 </body>
