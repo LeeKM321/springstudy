@@ -1,0 +1,55 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.springstudy.springmvc.chap04.mapper.BoardMapper">
+
+    <insert id="save">
+        INSERT INTO tbl_board
+        (title, content, writer)
+        VALUES(#{title}, #{content}, #{writer})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM tbl_board
+        WHERE board_no = #{boardNo}
+    </delete>
+
+    <update id="updateViewCount">
+        UPDATE tbl_board
+        SET view_count = view_count + 1
+        WHERE board_no = #{bno}
+    </update>
+
+    <!--
+    SELECT의 경우에는 반환되는 타입을 작성해 주어야 합니다.
+    resultType을 통해 리턴되는 객체의 타입을 얘기해 줍니다.
+    데이터베이스의 컬럼명과 엔터티의 필드명이 동일해야 합니다. (스네이크케이스 -> 카멜케이스 변환은 따로 설정을 통해 처리)
+    ex) board_no : boardNo (o)  board_num : bnum (x)
+    -->
+
+    <select id="findAll" resultType="board">
+        SELECT * FROM tbl_board
+        ORDER BY board_no DESC
+    </select>
+
+    <select id="findOne" resultType="board">
+        SELECT * FROM tbl_board
+        WHERE board_no = #{boardNo}
+    </select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
