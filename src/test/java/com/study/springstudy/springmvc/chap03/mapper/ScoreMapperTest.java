@@ -35,10 +35,11 @@ class ScoreMapperTest {
         // given
 
         // when
-        Score score = mapper.findOne(890);
+        List<Score> scoreList = mapper.findAll("name");
 
         // then
-        System.out.println(score);
+        scoreList.forEach(System.out::println);
+
     }
 
 }
