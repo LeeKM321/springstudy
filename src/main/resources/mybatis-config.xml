@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <!-- 카멜케이스와 스네이크 케이스 자동 변환 설정 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <!-- 조회던 결과가 없을 시에 null을 리턴해주는 설정 -->
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+    
+    <typeAliases>
+        <!-- 엔터티 클래스 별칭 붙이기 -->
+        <typeAlias type="com.study.springstudy.springmvc.chap03.entity.Score" alias="score" />
+    </typeAliases>
+
+    <!-- SQL을 적어놓은 XML 파일의 위치를 설정 -->
+    <mappers>
+        <mapper resource="mapper/ScoreMapper.xml" />
+    </mappers>
+
+</configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

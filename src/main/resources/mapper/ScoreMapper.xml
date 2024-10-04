@@ -1,0 +1,70 @@
+<!-- 이 파일이 mybatis의 mapper로 사용된다는 일종의 선언 (외우지 마세요) -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace에는 이 파일과 연동될 인터페이스의 전체 경로(패키지명 포함 클래스명)를 적는다. -->
+<mapper namespace="com.study.springstudy.springmvc.chap03.mapper.ScoreMapper">
+
+    <sql id="findAllSort">
+        <if test="sort == 'num'">
+            ORDER BY stu_num
+        </if>
+        <if test="sort == 'name'">
+            ORDER BY stu_name
+        </if>
+        <if test="sort == 'avg'">
+            ORDER BY average DESC
+        </if>
+    </sql>
+
+
+
+    <!-- 구현하고자 하는 인터페이스에 명세된 추상 메서드별로 SQL을 작성 -->
+    <!-- id에는 추상메서드 이름을 적음. -->
+    <!-- SQL 작성할 때 값을 전달하는 방법은
+         1. 추상메서드를 보고 어떤 타입의 값이 전달되는지 확인.
+         2. 값이 만약 객체라면, 객체 내부의 필드값을 꺼내기 위해 필드명을 지목. (get 안붙여요)
+         3. 단일 값(기본 타입)이라면 매개변수명으로 지목 -->
+
+    <insert id="save">
+        INSERT INTO score
+        (stu_name, kor, eng, math, total, average, grade)
+        VALUES(#{stuName},#{kor},#{eng},#{math},#{total},#{average},#{grade})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM score WHERE stu_num = #{stuNum}
+    </delete>
+
+    <update id="update">
+        UPDATE score
+        SET kor=#{kor}, eng=#{eng}, math=#{math},
+        total=#{total}, average=#{average}, grade=#{grade}
+        WHERE stu_num=#{stuNum}
+    </update>
+
+    <select id="findAll" resultType="score">
+        SELECT * FROM score
+        <include refid="findAllSort" />
+    </select>
+
+    <select id="findOne" resultType="score">
+        SELECT * FROM score
+        WHERE stu_num = #{stuNum}
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
