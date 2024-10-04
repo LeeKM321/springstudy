@@ -67,7 +67,7 @@
                         </div>
                     </section>
                     <div class="card-btn-group">
-                        <button class="del-btn" data-href="#">
+                        <button class="del-btn" data-href="${b.boardNo}">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -111,14 +111,44 @@
             </div>
         </div>
     </div>
-    
+
     <script>
+
+        // 삭제에 필요한 요소들을 먼저 얻겠습니다.
+        const $modal = document.getElementById('modal'); // 모달창 얻기
+        const $confirmDelete = document.getElementById('confirmDelete'); // 모달 삭제 확인버튼
+        const $cancelDelete = document.getElementById('cancelDelete'); // 모달 삭제 취소버튼
+
+
 
         // 카드 형태의 게시물들을 감싸고 있는 부모 요소 취득
         const $cardContainer = document.querySelector('.card-container');
 
         $cardContainer.addEventListener('click', e => {
             if (e.target.matches('.card-container')) return;
+
+            // 삭제 버튼을 눌렀다면~
+            if (e.target.matches('.card-btn-group *')) {
+                $modal.style.display = 'flex'; // 숨겨진 모달창 드러내기.
+
+                // 이벤트가 발생된 타겟에서 가장 가까운 .del-btn이 갖고있는 글번호를 얻자.
+                const delTargetBno = e.target.closest('.del-btn').dataset.href;
+                
+                // 삭제 확인 버튼 클릭 이벤트
+                $confirmDelete.onclick = () => {
+                    // js로 form을 생성할 수 있음. -> post로 요청 보낼 것.
+                    const formData = new FormData();
+                    
+                }
+
+
+                // 삭제 취소 버튼 클릭 이벤트
+                $cancelDelete.onclick = () => {
+                    $modal.style.display = 'none';
+                }
+
+
+            }
             
             // section 태그에 붙은 글 번호를 읽어오자.
             // 이벤트가 발생된 타겟이 지금 계속 달라지고 있다. -> 고정된 상대 경로로는 번호를 얻기 힘들다.
