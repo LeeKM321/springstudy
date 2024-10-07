@@ -1,14 +1,11 @@
 package com.study.springstudy.springmvc.chap04.mapper;
 
+import com.study.springstudy.springmvc.chap04.dto.PageDTO;
 import com.study.springstudy.springmvc.chap04.entity.Board;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,7 +23,7 @@ class BoardMapperTest {
     // @BeforeEach
     @Test
     void bulkInsert() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 300; i++) {
             Board b = new Board();
             b.setTitle("테스트제목" + i);
             b.setWriter("글쓴이" + i);
@@ -37,12 +34,15 @@ class BoardMapperTest {
     }
     
     @Test
-    @DisplayName("전체조회 테스트를 수행하면 게시물의 개수가 10개일 것이다.")
+    @DisplayName("페이징이 적용된 게시물 조회 테스트")
     void findAllTest() {
         // given
+        PageDTO page = new PageDTO(); // pageNo: 1, amount: 6
+        page.setPageNo(16);
+        page.setAmount(10);
         
         // when
-        List<Board> boardList = mapper.findAll();
+        List<Board> boardList = mapper.findAll(page);
 
         // then
         boardList.forEach(System.out::println);

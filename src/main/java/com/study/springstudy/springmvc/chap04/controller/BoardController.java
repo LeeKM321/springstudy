@@ -3,6 +3,7 @@ package com.study.springstudy.springmvc.chap04.controller;
 import com.study.springstudy.springmvc.chap04.dto.BoardDetailResponseDTO;
 import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDTO;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDTO;
+import com.study.springstudy.springmvc.chap04.dto.PageDTO;
 import com.study.springstudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -53,9 +54,10 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    // 목록 요청 (페이징을 곁들인)
     @GetMapping("/list")
-    public String list(Model model) {
-        List<BoardListResponseDTO> list = boardService.getList();
+    public String list(Model model, PageDTO page) {
+        List<BoardListResponseDTO> list = boardService.getList(page);
         model.addAttribute("bList", list);
         return "chap04/list";
     }
