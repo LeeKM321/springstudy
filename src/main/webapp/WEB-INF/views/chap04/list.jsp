@@ -33,16 +33,16 @@
                         <option value="writer">작성자</option>
                         <option value="tc">제목+내용</option>
                     </select>
-                    <input type="text" class="form-control" name="keyword">
+                    <input type="text" class="form-control" name="keyword" value="${s.keyword}">
                     <button class="btn btn-primary" type="submit">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
             </div>
             <div class="amount">
-                <div><a href="/board/list?pageNo=1&amount=6">6</a></div>
-                <div><a href="/board/list?pageNo=1&amount=18">18</a></div>
-                <div><a href="/board/list?pageNo=1&amount=30">30</a></div>
+                <div><a href="/board/list?pageNo=1&amount=6&type=${s.type}&keyword=${s.keyword}">6</a></div>
+                <div><a href="/board/list?pageNo=1&amount=18&type=${s.type}&keyword=${s.keyword}">18</a></div>
+                <div><a href="/board/list?pageNo=1&amount=30&type=${s.type}&keyword=${s.keyword}">30</a></div>
             </div>
         </div>
         <!-- 메인 게시판 영역 -->
@@ -82,21 +82,21 @@
                 <ul class="pagination pagination-lg pagination-custom">
                         <c:if test="${maker.prev}">
                             <li class="page-item">
-                                <a class="page-link" href="/board/list?pageNo=${maker.begin-1}&amount=${maker.page.amount}">&lt;&lt;</a>
+                                <a class="page-link" href="/board/list?pageNo=${maker.begin-1}&amount=${s.amount}&type=${s.type}&keyword=${s.keyword}">&lt;&lt;</a>
                             </li>
                         </c:if>
 
                         <!-- step은 기본값이 1, 생략 가능 -->
                         <c:forEach var="i" begin="${maker.begin}" end="${maker.end}">
                             <li data-page-num="${i}" class="page-item">
-                                <a class="page-link" href="/board/list?pageNo=${i}&amount=${maker.page.amount}">${i}</a>
+                                <a class="page-link" href="/board/list?pageNo=${i}&amount=${s.amount}&type=${s.type}&keyword=${s.keyword}">${i}</a>
                             </li>
                         </c:forEach>
 
 
                         <c:if test="${maker.next}">
                             <li class="page-item">
-                                <a class="page-link" href="/board/list?pageNo=${maker.end + 1}&amount=${maker.page.amount}">&gt;&gt;</a>
+                                <a class="page-link" href="/board/list?pageNo=${maker.end + 1}&amount=${s.amount}&type=${s.type}&keyword=${s.keyword}">&gt;&gt;</a>
                             </li>
                         </c:if>
                 </ul>
@@ -169,7 +169,7 @@
             console.log('글 번호: ', bno);            
 
             // 서버에 요청 보내기
-            location.href='/board/detail/' + bno + '?pageNo=${maker.page.pageNo}&amount=${maker.page.amount}';
+            location.href='/board/detail/' + bno + '?pageNo=${s.pageNo}&amount=${s.amount}&type=${s.type}&keyword=${s.keyword}';
             
         })
 
@@ -226,7 +226,21 @@
         });
       }
 
+      // 검색조건 셀렉트 박스 옵션 타입 고정하기
+      function fixSearchOption() {
+        const $select = document.getElementById('search-type');
+
+        const $options = [...$select.children];
+        $options.forEach($opt => {
+            if ($opt.value === '${s.type}') {
+                // option 태그에 selected를 주면 그 option으로 고정됨.
+                $opt.setAttribute('selected', 'selected');
+            }
+        });
+      }
+
       appendPageActive();
+      fixSearchOption();
 
     </script>
 

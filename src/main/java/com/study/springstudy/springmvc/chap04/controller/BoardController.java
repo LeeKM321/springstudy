@@ -1,9 +1,6 @@
 package com.study.springstudy.springmvc.chap04.controller;
 
-import com.study.springstudy.springmvc.chap04.dto.BoardDetailResponseDTO;
-import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDTO;
-import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDTO;
-import com.study.springstudy.springmvc.chap04.dto.PageDTO;
+import com.study.springstudy.springmvc.chap04.dto.*;
 import com.study.springstudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -55,9 +52,10 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    // 목록 요청 (페이징을 곁들인)
+    // 목록 요청 (페이징과 검색 기능을 곁들인)
     @GetMapping("/list")
-    public String list(Model model, PageDTO page) {
+    public String list(Model model,
+                       @ModelAttribute("s") SearchDTO page) {
         Map<String, Object> map = boardService.getList(page);
         model.addAttribute("bList", map.get("bList"));
         model.addAttribute("maker", map.get("pm"));
@@ -80,7 +78,7 @@ public class BoardController {
     @GetMapping("/detail/{bno}")
     public String detail(@PathVariable int bno,
                          // model에 직접 데이터를 담는 로직을 생략할 수 있는 @ModelAttribute
-                         @ModelAttribute("p") PageDTO page,
+                         @ModelAttribute("s") SearchDTO page,
                          Model model) {
         BoardDetailResponseDTO dto = boardService.getDetail(bno);
         model.addAttribute("b", dto);

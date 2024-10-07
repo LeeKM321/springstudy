@@ -4,6 +4,23 @@
 
 <mapper namespace="com.study.springstudy.springmvc.chap04.mapper.BoardMapper">
 
+    <sql id="search">
+        <if test="type == 'title'">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'content'">
+            WHERE content LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'writer'">
+            WHERE writer LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'tc'">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+            OR content LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </sql>
+
+
     <insert id="save">
         INSERT INTO tbl_board
         (title, content, writer)
@@ -30,6 +47,7 @@
 
     <select id="findAll" resultType="board">
         SELECT * FROM tbl_board
+        <include refid="search" />
         ORDER BY board_no DESC
         LIMIT #{pageStart}, #{amount}
     </select>
@@ -39,9 +57,12 @@
         WHERE board_no = #{boardNo}
     </select>
 
+    <!-- 총 게시물을 구하는 메서드도 SearchDTO를 전달받아야 한다. -->
+    <!-- 검색 결과에 따른 페이징이 진행되어야 하기 때문. (검색 결과는 총 게시물 개수보다 작을 확률이 높음) -->
     <select id="getTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM tbl_board
+        <include refid="search" />
     </select>
 
 

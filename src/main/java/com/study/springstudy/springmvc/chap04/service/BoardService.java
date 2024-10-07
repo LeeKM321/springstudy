@@ -26,7 +26,7 @@ public class BoardService {
     public Map<String, Object> getList(PageDTO page) {
         // 전체 게시글을 가지고 오는것이 아닌, 특정 페이지 부분만 가져와야 함.
         List<Board> boardList = mapper.findAll(page);
-        PageMaker pageMaker = new PageMaker(page, mapper.getTotalCount());
+        PageMaker pageMaker = new PageMaker(page, mapper.getTotalCount(page));
 
         List<BoardListResponseDTO> dtoList = boardList.stream()
                 .map(BoardListResponseDTO::new)
