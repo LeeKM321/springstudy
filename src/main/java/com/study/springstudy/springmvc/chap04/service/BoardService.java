@@ -39,6 +39,11 @@ public class BoardService {
         Board board = mapper.findOne(bno);
         return new BoardDetailResponseDTO(board);
     }
+
+    // 삭제 서비스 로직
+    public void delete(int boardNo) {
+        mapper.delete(boardNo);
+    }
 }
 
 

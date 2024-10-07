@@ -80,6 +80,14 @@ public class BoardController {
         return "chap04/detail";
     }
 
+    @PostMapping("/delete")
+    public String delete(@RequestParam int boardNo) {
+        System.out.println("/board/delete: POST!!" + boardNo);
+        boardService.delete(boardNo);
+
+        return "redirect:/board/list";
+    }
+
 }
 
 
