@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /*
 1. 목록 조회 요청(/board/list: GET)
@@ -57,8 +58,9 @@ public class BoardController {
     // 목록 요청 (페이징을 곁들인)
     @GetMapping("/list")
     public String list(Model model, PageDTO page) {
-        List<BoardListResponseDTO> list = boardService.getList(page);
-        model.addAttribute("bList", list);
+        Map<String, Object> map = boardService.getList(page);
+        model.addAttribute("bList", map.get("bList"));
+        model.addAttribute("maker", map.get("pm"));
         return "chap04/list";
     }
 

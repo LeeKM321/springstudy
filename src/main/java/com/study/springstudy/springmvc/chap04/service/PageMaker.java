@@ -1,7 +1,10 @@
 package com.study.springstudy.springmvc.chap04.service;
 
 import com.study.springstudy.springmvc.chap04.dto.PageDTO;
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter @ToString
 public class PageMaker {
 
     // 페이지의 시작번호와 끝번호, 보정된 끝 페이지 번호
