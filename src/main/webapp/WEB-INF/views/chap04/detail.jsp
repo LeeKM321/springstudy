@@ -132,7 +132,7 @@
     <div id="content">${b.content}</div>
     <div class="buttons">
         <button class="list-btn" type="button"
-                onclick="location.href='/board/list'">
+                onclick="location.href='/board/list?pageNo=${p.pageNo}&amount=${p.amount}'">
             목록
         </button>
     </div>

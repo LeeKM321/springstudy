@@ -78,9 +78,13 @@ public class BoardController {
 
     // /board/detail/23
     @GetMapping("/detail/{bno}")
-    public String detail(@PathVariable int bno, Model model) {
+    public String detail(@PathVariable int bno,
+                         // model에 직접 데이터를 담는 로직을 생략할 수 있는 @ModelAttribute
+                         @ModelAttribute("p") PageDTO page,
+                         Model model) {
         BoardDetailResponseDTO dto = boardService.getDetail(bno);
         model.addAttribute("b", dto);
+//        model.addAttribute("p", page);
         return "chap04/detail";
     }
 

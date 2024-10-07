@@ -40,9 +40,9 @@
                 </form>
             </div>
             <div class="amount">
-                <div><a href="#">6</a></div>
-                <div><a href="#">18</a></div>
-                <div><a href="#">30</a></div>
+                <div><a href="/board/list?pageNo=1&amount=6">6</a></div>
+                <div><a href="/board/list?pageNo=1&amount=18">18</a></div>
+                <div><a href="/board/list?pageNo=1&amount=30">30</a></div>
             </div>
         </div>
         <!-- 메인 게시판 영역 -->
@@ -82,21 +82,21 @@
                 <ul class="pagination pagination-lg pagination-custom">
                         <c:if test="${maker.prev}">
                             <li class="page-item">
-                                <a class="page-link" href="/board/list?pageNo=${maker.begin-1}">&lt;&lt;</a>
+                                <a class="page-link" href="/board/list?pageNo=${maker.begin-1}&amount=${maker.page.amount}">&lt;&lt;</a>
                             </li>
                         </c:if>
 
                         <!-- step은 기본값이 1, 생략 가능 -->
                         <c:forEach var="i" begin="${maker.begin}" end="${maker.end}">
                             <li data-page-num="${i}" class="page-item">
-                                <a class="page-link" href="/board/list?pageNo=${i}">${i}</a>
+                                <a class="page-link" href="/board/list?pageNo=${i}&amount=${maker.page.amount}">${i}</a>
                             </li>
                         </c:forEach>
 
 
                         <c:if test="${maker.next}">
                             <li class="page-item">
-                                <a class="page-link" href="/board/list?pageNo=${maker.end + 1}">&gt;&gt;</a>
+                                <a class="page-link" href="/board/list?pageNo=${maker.end + 1}&amount=${maker.page.amount}">&gt;&gt;</a>
                             </li>
                         </c:if>
                 </ul>
@@ -169,7 +169,7 @@
             console.log('글 번호: ', bno);            
 
             // 서버에 요청 보내기
-            location.href='/board/detail/' + bno;
+            location.href='/board/detail/' + bno + '?pageNo=${maker.page.pageNo}&amount=${maker.page.amount}';
             
         })
 
