@@ -11,6 +11,34 @@
             (#{replyText}, #{replyWriter}, #{boardNo})
     </insert>
 
+    <select id="findAll" resultType="reply">
+        SELECT * FROM tbl_reply
+        WHERE board_no = #{boardNo}
+        ORDER BY reply_no
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_reply
+        WHERE board_no = #{boardNo}
+    </select>
+
+    <delete id="delete">
+        DELETE FROM tbl_reply
+        WHERE reply_no = #{replyNo}
+    </delete>
+
+    <select id="findOne" resultType="reply">
+        SELECT * FROM tbl_reply
+        WHERE reply_no = #{replyNo}
+    </select>
+
+    <update id="modify">
+        UPDATE tbl_reply
+        SET reply_text = #{replyText}
+        WHERE reply_no = #{replyNo}
+    </update>
+
 
 </mapper>
 

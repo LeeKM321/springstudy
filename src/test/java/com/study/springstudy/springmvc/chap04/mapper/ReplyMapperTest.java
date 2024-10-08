@@ -1,11 +1,16 @@
 package com.study.springstudy.springmvc.chap04.mapper;
 
+import com.study.springstudy.springmvc.Student;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.entity.Reply;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,6 +43,56 @@ class ReplyMapperTest {
                     .build();
             replyMapper.save(reply);
         }
+    }
+
+    @Test
+    @DisplayName("77번 게시물의 댓글 목록을 조회했을 때 결과 리스트의 사이즈는 n이어야 한다.")
+    void findAllTest() {
+        // given
+        int boardNo = 77;
+        // when
+        List<Reply> replyList = replyMapper.findAll(boardNo);
+        replyList.forEach(System.out::println);
+
+        // then
+        assertEquals(replyMapper.count(boardNo), replyList.size());
+    }
+
+    @Test
+    @DisplayName("77번 게시물의 댓글 중 n번 댓글을 삭제하면 n번 댓글은 조회되지 않아야 하고, " +
+            "77번을 전체조회하면 리스트 사이즈가 하나 줄어있어야 한다.")
+    @Transactional
+    void deleteTest() {
+        // given
+        int boardNo = 77;
+        int replyNo = 290;
+        int beforeDeleteCount = replyMapper.count(boardNo);
+
+        // when
+        replyMapper.delete(replyNo);
+        Reply reply = replyMapper.findOne(replyNo);
+
+        // then
+        assertNull(reply);
+        assertNotEquals(beforeDeleteCount ,replyMapper.findAll(boardNo).size());
+    }
+
+    @Test
+    @DisplayName("103번 댓글의 댓글 내용을 수정하면 다시 조회했을 때 수정된 내용이 조회되어야 한다.")
+    void modifyTest() {
+        // given
+        int replyNo = 103;
+        String newReplyText = "수정수정댓글~!";
+        Reply reply = Reply.builder()
+                .replyNo(replyNo)
+                .replyText(newReplyText)
+                .build();
+
+        // when
+        replyMapper.modify(reply);
+
+        // then
+        assertEquals(newReplyText, replyMapper.findOne(replyNo).getReplyText());
     }
 
 
