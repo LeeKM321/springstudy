@@ -1,9 +1,9 @@
 package com.study.springstudy.springmvc.chap04.service;
 
-import com.study.springstudy.springmvc.chap04.dto.BoardDetailResponseDTO;
-import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDTO;
-import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDTO;
-import com.study.springstudy.springmvc.chap04.dto.PageDTO;
+import com.study.springstudy.springmvc.chap04.dto.response.BoardDetailResponseDTO;
+import com.study.springstudy.springmvc.chap04.dto.response.BoardListResponseDTO;
+import com.study.springstudy.springmvc.chap04.dto.request.BoardWriteRequestDTO;
+import com.study.springstudy.springmvc.chap04.dto.request.PageDTO;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;

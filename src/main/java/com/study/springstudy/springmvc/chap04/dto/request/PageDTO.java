@@ -1,4 +1,4 @@
-package com.study.springstudy.springmvc.chap04.dto;
+package com.study.springstudy.springmvc.chap04.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

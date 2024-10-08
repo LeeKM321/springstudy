@@ -1,13 +1,14 @@
 package com.study.springstudy.springmvc.chap04.controller;
 
-import com.study.springstudy.springmvc.chap04.dto.*;
+import com.study.springstudy.springmvc.chap04.dto.request.BoardWriteRequestDTO;
+import com.study.springstudy.springmvc.chap04.dto.request.SearchDTO;
+import com.study.springstudy.springmvc.chap04.dto.response.BoardDetailResponseDTO;
 import com.study.springstudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /*
