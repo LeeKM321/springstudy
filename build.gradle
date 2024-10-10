@@ -49,7 +49,8 @@ dependencies {
 	// 입력값 검증 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-
+	//스프링 시큐리티 모듈
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 
 }
