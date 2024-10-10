@@ -14,6 +14,8 @@ public class BoardDetailResponseDTO {
     private final String regDate;
     private final String writer;
 
+    private int replyCount; // 목록에서 각 게시물 당 댓글 수 보여주는 전용 필드.
+
     public BoardDetailResponseDTO(Board board) {
         this.boardNo = board.getBoardNo();
         this.title = board.getTitle();

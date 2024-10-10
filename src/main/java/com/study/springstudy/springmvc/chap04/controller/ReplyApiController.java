@@ -62,6 +62,21 @@ public class ReplyApiController {
         return ResponseEntity.ok().body("modSuccess");
     }
 
+    @DeleteMapping("/{replyNo}")
+    public ResponseEntity<?> remove(@PathVariable int replyNo) {
+        try {
+            replyService.delete(replyNo);
+            return ResponseEntity.ok()
+                    .body("delSuccess");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .internalServerError()
+                    .body(e.getMessage());
+        }
+
+    }
+
 
 
 }

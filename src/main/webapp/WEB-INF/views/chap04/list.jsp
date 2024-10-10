@@ -51,7 +51,10 @@
                 <div class="card-wrapper">
                     <section class="card" data-bno="${b.boardNo}">
                         <div class="card-title-wrapper">
-                            <h2 class="card-title">${b.shortTitle}</h2>
+                            <h2 class="card-title">
+                                ${b.shortTitle}
+                                <span>0</span>
+                            </h2>
                             <div class="time-view-wrapper">
                                 <div class="time">
                                     <i class="far fa-clock"></i>
