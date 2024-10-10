@@ -272,6 +272,49 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       const bno = '${b.boardNo}';
       const $addBtn = document.getElementById('replyAddBtn');
 
+      // 화면에 댓글 태그들을 렌더링하는 함수
+      function renderReplies(replies) {
+        let tag = '';
+
+        if (replies !== null && replies.length > 0) {
+          for (let reply of replies) {
+            // 객체 디스트럭쳐링
+            const { rno, writer, text, regDate } = reply;
+
+            tag += `
+                    <div id='replyContent' class='card-body' data-replyId='\${rno}'>
+                        <div class='row user-block'>
+                            <span class='col-md-8'>
+                        `;
+
+            tag += `<b>\${writer}</b>
+                            </span>
+                            <span class='col-md-4 text-right'><b>\${regDate}</b></span>
+                        </div><br>
+                        <div class='row'>
+                            <div class='col-md-9'>\${text}</div>
+                            <div class='col-md-3 text-right'>
+                        `;
+            tag += `
+                        <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;
+                        <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>
+                    `;
+            tag += `   </div>
+                            </div>
+                        </div>
+                        `;
+          }
+        } else {
+          tag +=
+            "<div id='replyContent' class='card-body'>댓글이 아직 없습니다! ㅠㅠ</div>";
+        }
+        // 댓글 수 렌더링
+        document.getElementById('replyCnt').textContent = replies.length;
+
+        // 반복문을 이용해서 문자열로 작성한 tag를 댓글 영역 div에 innerHTML로 삽입.
+        document.getElementById('replyData').innerHTML = tag;
+      }
+
       // 서버에 비동기 방식으로 댓글 목록을 받아오는 함수
       function fetchGetReplies() {
         // 자바스크립트 문자열 안에 달러와 중괄호를 쓰면 el로 인식.
@@ -280,6 +323,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           .then((res) => res.json())
           .then((replyList) => {
             console.log(replyList);
+            renderReplies(replyList);
           });
       }
 

@@ -5,6 +5,7 @@ import com.study.springstudy.springmvc.chap04.dto.response.ReplyDetailResponseDt
 import com.study.springstudy.springmvc.chap04.entity.Reply;
 import com.study.springstudy.springmvc.chap04.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
+import org.eclipse.jdt.internal.compiler.lookup.SourceTypeCollisionException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class ReplyService {
 
         List<ReplyDetailResponseDto> dtoList = new ArrayList<>();
         replyList.forEach(reply -> dtoList.add(new ReplyDetailResponseDto(reply)));
+        System.out.println("dtoList = " + dtoList);
         return dtoList;
     }
 }
