@@ -1,5 +1,6 @@
 package com.study.springstudy.springmvc.chap04.controller;
 
+import com.study.springstudy.springmvc.chap04.dto.request.ReplyModifyRequestDto;
 import com.study.springstudy.springmvc.chap04.dto.request.ReplyPostRequestDto;
 import com.study.springstudy.springmvc.chap04.dto.response.ReplyDetailResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.response.ReplyListResponseDto;
@@ -47,6 +48,18 @@ public class ReplyApiController {
                 = replyService.getList(boardNo, pageNo);
 
         return ResponseEntity.ok().body(replies);
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> update(@Validated @RequestBody ReplyModifyRequestDto dto,
+                                    BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest()
+                    .body(result.toString());
+        }
+
+        replyService.modify(dto);
+        return ResponseEntity.ok().body("modSuccess");
     }
 
 

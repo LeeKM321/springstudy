@@ -435,6 +435,67 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         });
       };
 
+      // 댓글 삭제 + 수정 모드 진입 이벤트 핸들러 등록 및 처리함수
+      function makeReplyRemoveClickHandler() {
+        // 댓글 목록 전체를 감싸고 있는 영역 취득
+        const $replyData = document.getElementById('replyData');
+
+        $replyData.addEventListener('click', (e) => {
+          e.preventDefault(); // a태그 죽이기
+
+          // 수정이든 삭제든 댓글 번호가 필요합니다.
+          // 그래서 미리 얻어놓도록 하겠습니다.
+          const rno = e.target.closest('#replyContent').dataset.replyid;
+
+          if (e.target.matches('#replyDelBtn')) {
+            // 삭제 로직 진행
+          } else if (e.target.matches('#replyModBtn')) {
+            // 수정 모드 진입 (모달)
+            // 기존에 작성한 댓글 내용을 가져오자.
+            const replyText =
+              e.target.parentNode.previousElementSibling.textContent;
+
+            // 읽어온 댓글 내용을 모달 바디에 때려 넣자.
+            document.getElementById('modReplyText').value = replyText;
+
+            // 댓글 번호도 모달 안에 있는 input hidden에다가 집어 넣어야 함.
+            document.getElementById('modReplyId').value = rno;
+          } else return;
+        });
+      }
+
+      // 모달 안에서 수정 버튼 클릭시 이벤트 처리 함수
+      function makeReplyModifyClickHandler() {
+        const $modBtn = document.getElementById('replyModBtn');
+
+        $modBtn.addEventListener('click', (e) => {
+          const payload = {
+            rno: document.getElementById('modReplyId').value,
+            text: document.getElementById('modReplyText').value,
+          };
+
+          const requestInfo = {
+            method: 'PATCH',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          };
+
+          fetch(URL, requestInfo).then((res) => {
+            if (res.status === 200) {
+              // modal 닫기
+              document.getElementById('modal-close').click();
+              fetchGetReplies(); // 수정 완료 후 1페이지 댓글 목록 요청이 들어가게끔 처리.
+            } else {
+              alert('수정값에 문제가 있습니다. 내용을 확인하세요!');
+              document.getElementById('modReplyText').value = '';
+              return;
+            }
+          });
+        });
+      }
+
       // 즉시 실행 함수를 이용해서 페이지가 로딩되면 함수가 자동 호출되게 하자.
       (() => {
         // 댓글을 서버에서 불러오기.
@@ -442,6 +503,12 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 
         // 페이지 번호 클릭 이벤트 등록
         makePageButtonClickHandler();
+
+        // 댓글 삭제 & 수정 모드 이벤트 등록
+        makeReplyRemoveClickHandler();
+
+        // 댓글 수정 요청 이벤트 핸들러
+        makeReplyModifyClickHandler();
       })();
     </script>
   </body>

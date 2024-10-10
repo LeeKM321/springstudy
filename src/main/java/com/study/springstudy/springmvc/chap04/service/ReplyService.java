@@ -1,6 +1,7 @@
 package com.study.springstudy.springmvc.chap04.service;
 
 import com.study.springstudy.springmvc.chap04.dto.request.PageDTO;
+import com.study.springstudy.springmvc.chap04.dto.request.ReplyModifyRequestDto;
 import com.study.springstudy.springmvc.chap04.dto.request.ReplyPostRequestDto;
 import com.study.springstudy.springmvc.chap04.dto.response.ReplyDetailResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.response.ReplyListResponseDto;
@@ -38,6 +39,10 @@ public class ReplyService {
                 .replies(dtoList)
                 .build();
 
+    }
+
+    public void modify(ReplyModifyRequestDto dto) {
+        mapper.modify(dto.toEntity());
     }
 }
 
