@@ -25,7 +25,7 @@ public class BoardService {
     // mapper로부터 전달받은 entity list를 dto list로 변환해서 컨트롤러에게 리턴
     public Map<String, Object> getList(PageDTO page) {
         // 전체 게시글을 가지고 오는것이 아닌, 특정 페이지 부분만 가져와야 함.
-        List<Board> boardList = mapper.findAll(page);
+        List<BoardDetailResponseDTO> boardList = mapper.findAll(page);
         PageMaker pageMaker = new PageMaker(page, mapper.getTotalCount(page));
 
         List<BoardListResponseDTO> dtoList = boardList.stream()

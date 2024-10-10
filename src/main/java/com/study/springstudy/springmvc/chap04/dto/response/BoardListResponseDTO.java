@@ -18,14 +18,16 @@ public class BoardListResponseDTO {
     private final String regDate; // yyyy-MM-dd HH:mm
     private final int viewCount;
     private final String writer;
+    private final int replyCount;
 
-    public BoardListResponseDTO(Board board) {
+    public BoardListResponseDTO(BoardDetailResponseDTO board) {
         this.boardNo = board.getBoardNo();
         this.shortTitle = makeShortTitle(board.getTitle());
         this.shortContent = makeShortContent(board.getContent());
-        this.regDate = makePrettierDateString(board.getRegDate());
+        this.regDate = board.getRegDate();
         this.viewCount = board.getViewCount();
         this.writer = board.getWriter();
+        this.replyCount = board.getReplyCount();
     }
 
     public static String makePrettierDateString(LocalDateTime regDate) {

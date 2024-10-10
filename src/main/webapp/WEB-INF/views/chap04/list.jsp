@@ -53,7 +53,7 @@
                         <div class="card-title-wrapper">
                             <h2 class="card-title">
                                 ${b.shortTitle}
-                                <span>0</span>
+                                <span>[${b.replyCount}]</span>
                             </h2>
                             <div class="time-view-wrapper">
                                 <div class="time">

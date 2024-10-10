@@ -1,6 +1,7 @@
 package com.study.springstudy.springmvc.chap04.mapper;
 
 import com.study.springstudy.springmvc.chap04.dto.request.PageDTO;
+import com.study.springstudy.springmvc.chap04.dto.response.BoardDetailResponseDTO;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public interface BoardMapper {
 
     // 목록 조회
-    List<Board> findAll(PageDTO page);
+    List<BoardDetailResponseDTO> findAll(PageDTO page);
 
     // 상세 조회
     Board findOne(int boardNo);
