@@ -273,7 +273,10 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       const $addBtn = document.getElementById('replyAddBtn');
 
       // 화면에 댓글 태그들을 렌더링하는 함수
-      function renderReplies(replies) {
+      function renderReplies(replyData) {
+        // 객체 디스트럭쳐링 (댓글 수, 페이지메이커, 댓글목록으로 분해)
+        const { count, pageInfo, replies } = replyData;
+
         let tag = '';
 
         if (replies !== null && replies.length > 0) {
@@ -313,13 +316,46 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 
         // 반복문을 이용해서 문자열로 작성한 tag를 댓글 영역 div에 innerHTML로 삽입.
         document.getElementById('replyData').innerHTML = tag;
+
+        // 페이지 렌더링 함수 호출
+        renderPages(pageInfo);
+      }
+
+      // 화면에 페이지 버튼들을 렌더링하는 함수.
+      // 매개변수 선언부에 처음부터 디스트럭쳐링 해서 받고 있음.
+      function renderPages({ begin, end, prev, next, page, finalPage }) {
+        let tag = '';
+
+        // 이전 버튼 만들기
+        if (prev) {
+          tag += `<li class='page-item'><a class='page-link page-active' href='\${begin - 1}'>이전</a></li>`;
+        }
+
+        // 페이지 번호 버튼 만들기
+        for (let i = begin; i <= end; i++) {
+          let active = '';
+          if (page.pageNo === i) {
+            active = 'p-active';
+          }
+
+          tag += `<li class='page-item \${active}'><a class='page-link page-custom' href='\${i}'>\${i}</a></li>`;
+        }
+
+        // 다음 버튼 만들기
+        if (next) {
+          tag += `<li class='page-item'><a class='page-link page-active' href='\${end + 1}'>다음</a></li>`;
+        }
+
+        // 페이지 태그 렌더링
+        document.querySelector('.pagination').innerHTML = tag;
       }
 
       // 서버에 비동기 방식으로 댓글 목록을 받아오는 함수
-      function fetchGetReplies() {
+      function fetchGetReplies(pageNum = 1) {
+        // 댓글 목록 요청시 페이지번호 전달(전달 안되면 기본값 1)
         // 자바스크립트 문자열 안에 달러와 중괄호를 쓰면 el로 인식.
         // 달러기호 앞에 백슬래시 붙여주세요.
-        fetch(`\${URL}/\${bno}`)
+        fetch(`\${URL}/\${bno}/page/\${pageNum}`)
           .then((res) => res.json())
           .then((replyList) => {
             console.log(replyList);
