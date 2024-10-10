@@ -2,6 +2,7 @@ package com.study.springstudy.springmvc.chap04.controller;
 
 import com.study.springstudy.springmvc.chap04.dto.request.ReplyPostRequestDto;
 import com.study.springstudy.springmvc.chap04.dto.response.ReplyDetailResponseDto;
+import com.study.springstudy.springmvc.chap04.dto.response.ReplyListResponseDto;
 import com.study.springstudy.springmvc.chap04.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +37,16 @@ public class ReplyApiController {
         return ResponseEntity.ok().body("success");
     }
 
-    @GetMapping("/{boardNo}")
-    public ResponseEntity<?> list(@PathVariable int boardNo) {
-        List<ReplyDetailResponseDto> dtoList = replyService.getList(boardNo);
+    // 댓글 목록 조회 요청
+    // URL: /api/v1/replies/{boardNo}/page/페이지번호
+    @GetMapping("/{boardNo}/page/{pageNo}")
+    public ResponseEntity<?> list(@PathVariable int boardNo,
+                                  @PathVariable int pageNo) {
+        System.out.println("boardNo: " + boardNo + ", pageNo: " + pageNo);
+        ReplyListResponseDto replies
+                = replyService.getList(boardNo, pageNo);
 
-        return ResponseEntity.ok().body(dtoList);
+        return ResponseEntity.ok().body(replies);
     }
 
 

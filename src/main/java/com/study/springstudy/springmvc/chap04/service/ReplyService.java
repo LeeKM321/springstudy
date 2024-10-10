@@ -1,11 +1,12 @@
 package com.study.springstudy.springmvc.chap04.service;
 
+import com.study.springstudy.springmvc.chap04.dto.request.PageDTO;
 import com.study.springstudy.springmvc.chap04.dto.request.ReplyPostRequestDto;
 import com.study.springstudy.springmvc.chap04.dto.response.ReplyDetailResponseDto;
+import com.study.springstudy.springmvc.chap04.dto.response.ReplyListResponseDto;
 import com.study.springstudy.springmvc.chap04.entity.Reply;
 import com.study.springstudy.springmvc.chap04.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
-import org.eclipse.jdt.internal.compiler.lookup.SourceTypeCollisionException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,13 +22,22 @@ public class ReplyService {
         mapper.save(dto.toEntity());
     }
 
-    public List<ReplyDetailResponseDto> getList(int boardNo) {
-        List<Reply> replyList = mapper.findAll(boardNo);
+    public ReplyListResponseDto getList(int boardNo, int pageNo) {
+        PageDTO page = new PageDTO();
+        page.setAmount(5);
+        page.setPageNo(pageNo);
+
+        List<Reply> replyList = mapper.findAll(boardNo, page);
 
         List<ReplyDetailResponseDto> dtoList = new ArrayList<>();
         replyList.forEach(reply -> dtoList.add(new ReplyDetailResponseDto(reply)));
-        System.out.println("dtoList = " + dtoList);
-        return dtoList;
+
+        return ReplyListResponseDto.builder()
+                .count(dtoList.size())
+                .pageInfo(new PageMaker(page, mapper.count(boardNo)))
+                .replies(dtoList)
+                .build();
+
     }
 }
 
