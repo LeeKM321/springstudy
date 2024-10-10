@@ -363,6 +363,21 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           });
       }
 
+      // 페이지 클릭 이벤트 핸들러 등록 함수
+      function makePageButtonClickHandler() {
+        console.log('페이지 버튼이 클릭됨!');
+
+        const $pageUl = document.querySelector('.pagination');
+
+        $pageUl.addEventListener('click', (e) => {
+          if (!e.target.matches('.page-item a')) return;
+          e.preventDefault(); // a 기능 죽이기
+
+          // href에 작성된 각각의 페이지 번호를 가져와서 댓글 목록을 비동기 요청.
+          fetchGetReplies(e.target.getAttribute('href'));
+        });
+      }
+
       // 댓글 등록
       $addBtn.onclick = (e) => {
         const $replyText = document.getElementById('newReplyText'); // 댓글 내용
@@ -424,6 +439,9 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       (() => {
         // 댓글을 서버에서 불러오기.
         fetchGetReplies();
+
+        // 페이지 번호 클릭 이벤트 등록
+        makePageButtonClickHandler();
       })();
     </script>
   </body>
