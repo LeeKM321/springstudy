@@ -4,7 +4,9 @@ import com.study.springstudy.springmvc.chap04.dto.request.BoardWriteRequestDTO;
 import com.study.springstudy.springmvc.chap04.dto.request.SearchDTO;
 import com.study.springstudy.springmvc.chap04.dto.response.BoardDetailResponseDTO;
 import com.study.springstudy.springmvc.chap04.service.BoardService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +51,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -68,10 +71,12 @@ public class BoardController {
         return "chap04/write";
     }
 
+    // 글 등록 요청
     @PostMapping("/write")
-    public String write(BoardWriteRequestDTO dto) {
-        System.out.println("dto = " + dto);
-        boardService.register(dto);
+    public String write(BoardWriteRequestDTO dto,
+                        HttpSession session) {
+        log.info("/board/write: POST, dto: {}", dto);
+        boardService.register(dto, session);
         return "redirect:/board/list";
     }
 

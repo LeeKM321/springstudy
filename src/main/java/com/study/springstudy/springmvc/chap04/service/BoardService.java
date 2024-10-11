@@ -6,7 +6,8 @@ import com.study.springstudy.springmvc.chap04.dto.request.BoardWriteRequestDTO;
 import com.study.springstudy.springmvc.chap04.dto.request.PageDTO;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
-import com.study.springstudy.springmvc.chap04.mapper.ReplyMapper;
+import com.study.springstudy.springmvc.util.LoginUtils;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +39,14 @@ public class BoardService {
         return result;
     }
 
-    public void register(BoardWriteRequestDTO dto) {
-        mapper.save(new Board(dto)); // dto를 entity로 변환해서 mapper에게 전달.
+    public void register(BoardWriteRequestDTO dto, HttpSession session) {
+        // 이제는 화면단에서 작성자가 전달이 안됨.
+        // 세션에서 현재 로그인 중인 사용자의 아이디를 얻어와서 따로 세팅
+        Board board = new Board(dto);
+        String account = LoginUtils.getCurrentLoginMemberAccount(session);
+        board.setWriter(account);
+
+        mapper.save(board);
     }
 
     public BoardDetailResponseDTO getDetail(int bno) {
