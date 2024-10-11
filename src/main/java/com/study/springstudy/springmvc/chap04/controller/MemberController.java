@@ -5,6 +5,7 @@ import com.study.springstudy.springmvc.chap04.dto.request.SignUpRequestDto;
 import com.study.springstudy.springmvc.chap04.service.LoginResult;
 import com.study.springstudy.springmvc.chap04.service.MemberService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -53,14 +54,20 @@ public class MemberController {
                          // 리다이렉트는 응답이 나갔다가 재요청이 들어오는데, 그 과정에서
                          // 응답이 나가는 순간 모델이 소멸함.
                          RedirectAttributes ra,
-                         HttpServletResponse response) {
+                         HttpServletResponse response,
+                         HttpServletRequest request) {
         LoginResult result = memberService.authenticate(dto);
         // redirect에서 데이터를 일회성으로 전달할 때 사용하는 메서드.
         ra.addFlashAttribute("result", result);
 
         if (result == LoginResult.SUCCESS) { // 로그인 성공
             // 로그인을 했다는 정보를 계속 유지하기 위한 수단으로 쿠키를 사용하자.
-            makeLoginCookie(dto, response);
+            // makeLoginCookie(dto, response);
+
+            // 세션으로 로그인을 유지
+            // 서비스에게 세션 객체와 아이디를 전달.
+            memberService.maintainLoginState(request.getSession(), dto.getAccount());
+
 
             return "redirect:/board/list";
         }
