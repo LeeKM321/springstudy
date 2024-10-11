@@ -45,6 +45,9 @@
                 <div><a href="/board/list?pageNo=1&amount=30&type=${s.type}&keyword=${s.keyword}">30</a></div>
             </div>
         </div>
+
+        
+
         <!-- 메인 게시판 영역 -->
         <div class="card-container">
             <c:forEach var="b" items="${bList}">
