@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,19 +21,25 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/members")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
 
     // 회원가입 양식 열기
     @GetMapping("/sign-up")
-    public void signUp() {}
+    public void signUp() {
+        log.info("/members/sign-up: GET");
+    }
 
     // 아이디, 이메일 중복검사 비동기 요청 처리
     @GetMapping("/check")
     @ResponseBody
     public ResponseEntity<?> check(@RequestParam String type,
                                    @RequestParam String keyword) {
+        log.info("/members/check: async GET!");
+        log.debug("type: {}, keyword: {}", type, keyword);
+
         boolean flag = memberService.checkIdentifier(type, keyword);
         return ResponseEntity.ok()
                 .body(flag);
@@ -39,8 +47,9 @@ public class MemberController {
 
     @PostMapping("/sign-up")
     public String signUp(@Validated SignUpRequestDto dto) {
+        log.info("/members/sign-up: POST!");
+        log.info("param: {}", dto);
         boolean flag = memberService.join(dto);
-
         return flag ? "redirect:/members/sign-in" : "redirect:/members/sign-up";
     }
 
