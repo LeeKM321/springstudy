@@ -1,5 +1,6 @@
 package com.study.springstudy.springmvc.interceptor;
 
+import com.study.springstudy.springmvc.util.LoginUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -7,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.PrintWriter;
+
+import static com.study.springstudy.springmvc.util.LoginUtils.*;
 
 @Configuration
 public class AfterLoginInterceptor implements HandlerInterceptor {
@@ -21,7 +24,7 @@ public class AfterLoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
 
         // 세션에 데이터가 존재하지 않으면 null이 리턴
-        if (session.getAttribute("login") != null) {
+        if (isLogin(session)) {
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter w = response.getWriter();
             String htmlCode = "<!DOCTYPE html>\n" +
