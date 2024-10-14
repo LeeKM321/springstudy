@@ -6,7 +6,6 @@ import com.study.springstudy.springmvc.chap04.dto.request.SignUpRequestDto;
 import com.study.springstudy.springmvc.chap04.dto.response.LoginUserResponseDTO;
 import com.study.springstudy.springmvc.chap04.entity.Member;
 import com.study.springstudy.springmvc.chap04.mapper.MemberMapper;
-import com.study.springstudy.springmvc.util.LoginUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static com.study.springstudy.springmvc.chap04.service.LoginResult.*;
 import static com.study.springstudy.springmvc.util.LoginUtils.*;
@@ -30,8 +28,8 @@ public class MemberService {
     private final PasswordEncoder encoder;
 
     // 회원 가입 처리 서비스
-    public boolean join(SignUpRequestDto dto) {
-        return memberMapper.save(dto.toEntity(encoder));
+    public boolean join(SignUpRequestDto dto, String savePath) {
+        return memberMapper.save(dto.toEntity(encoder, savePath));
     }
 
     public LoginResult authenticate(LoginRequestDto dto,

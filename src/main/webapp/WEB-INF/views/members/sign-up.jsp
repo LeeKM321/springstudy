@@ -51,6 +51,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
                 id="signUpForm"
                 method="post"
                 style="margin-bottom: 0"
+                enctype="multipart/form-data"
               >
                 <div class="profile">
                   <div class="thumbnail-box">

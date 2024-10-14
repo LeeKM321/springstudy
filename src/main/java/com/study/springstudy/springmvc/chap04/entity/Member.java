@@ -36,6 +36,8 @@ public class Member {
     // 새롭게 추가된 컬럼에 맞게 필드를 추가 (자동 로그인)
     private String sessionId;
     private LocalDateTime limitTime;
+
+    private String profileImage; // 프로필 사진 이미지 경로
 }
 
 

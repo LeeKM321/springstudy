@@ -26,7 +26,7 @@ class MemberServiceTest {
                 .name("김철수")
                 .build();
         // when
-        boolean flag = memberService.join(dto);
+        boolean flag = memberService.join(dto, savePath);
         // then
         assertTrue(flag);
     }
