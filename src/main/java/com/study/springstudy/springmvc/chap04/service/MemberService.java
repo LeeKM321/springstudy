@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.study.springstudy.springmvc.chap04.service.LoginResult.*;
+import static com.study.springstudy.springmvc.util.LoginUtils.*;
 
 @Service
 @RequiredArgsConstructor
@@ -99,7 +100,7 @@ public class MemberService {
                 .build();
 
         // 세션에 로그인 한 회원 정보를 저장
-        session.setAttribute(LoginUtils.LOGIN_KEY, dto);
+        session.setAttribute(LOGIN_KEY, dto);
         // 세션 수명 설정
         session.setMaxInactiveInterval(60 * 60); // 1시간
 
@@ -111,11 +112,20 @@ public class MemberService {
 
         // 쿠키 삭제
         // -> 쿠키의 수명을 0으로 설정하여 다시 클라이언트에 전송 -> 자동 소멸
-        c.setMaxAge(0);
-        c.setPath("/");
-        response.addCookie(c);
+        if (c != null) {
+            c.setMaxAge(0);
+            c.setPath("/");
+            response.addCookie(c);
+        }
 
         // 데이터베이스에도 세션아이디와 만료시간을 정리해주자.
+        memberMapper.saveAutoLogin(
+                AutoLoginDto.builder()
+                        .sessionId("none") // 기존 세션아이디 지우기
+                        .limitTime(LocalDateTime.now())
+                        .account(getCurrentLoginMemberAccount(request.getSession()))
+                        .build()
+        );
 
     }
 }
