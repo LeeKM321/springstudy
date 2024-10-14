@@ -9,6 +9,7 @@ import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springstudy.springmvc.util.LoginUtils;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
 
     // mybatis가 우리가 만든 xml을 클래스로 변환해서 빈등록을 해 두기 때문에 주입이 가능하다.
@@ -27,6 +29,7 @@ public class BoardService {
     public Map<String, Object> getList(PageDTO page) {
         // 전체 게시글을 가지고 오는것이 아닌, 특정 페이지 부분만 가져와야 함.
         List<BoardDetailResponseDTO> boardList = mapper.findAll(page);
+        log.info("boardList: {}", boardList);
         PageMaker pageMaker = new PageMaker(page, mapper.getTotalCount(page));
 
         List<BoardListResponseDTO> dtoList = boardList.stream()
