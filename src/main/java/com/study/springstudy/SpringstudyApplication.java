@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringstudyApplication {
 
 	public static void main(String[] args) {
+		System.out.println(System.getProperty("java.io.tmpdir"));
 		SpringApplication.run(SpringstudyApplication.class, args);
 	}
 

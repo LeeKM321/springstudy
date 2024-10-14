@@ -49,7 +49,7 @@ public class MemberService {
         }
 
         // 자동 로그인 처리
-        if (dto.getAutoLogin()) {
+        if (dto.getAutoLogin() != null && dto.getAutoLogin()) {
             // 1. 자동 로그인 쿠키 생성 - 쿠키 안에는 중복되지 않는 값을 저장.
             // UUID, 브라우저 세션 아이디를 이용.
             Cookie autoCookie = new Cookie("auto", session.getId());
@@ -95,6 +95,7 @@ public class MemberService {
                 .name(foundMember.getName())
                 .email(foundMember.getEmail())
                 .auth(foundMember.getAuth().getDesc())
+                .profile(foundMember.getProfileImage()) // 프사 경로를 세션 데이터에 추가.
                 .build();
 
         // 세션에 로그인 한 회원 정보를 저장
