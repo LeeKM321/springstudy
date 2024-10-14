@@ -10,6 +10,29 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         margin-top: 200px;
         margin-bottom: 200px;
       }
+
+      .profile {
+        margin-bottom: 70px;
+        text-align: center;
+      }
+      .profile label {
+        font-weight: 700;
+        font-size: 1.2em;
+        cursor: pointer;
+        color: rgb(140, 217, 248);
+      }
+      .profile .thumbnail-box {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 30px auto 10px;
+        cursor: pointer;
+      }
+      .profile .thumbnail-box img {
+        width: 200px;
+        height: 200px;
+      }
     </style>
   </head>
   <body>
@@ -29,6 +52,21 @@ uri="http://java.sun.com/jsp/jstl/core" %>
                 method="post"
                 style="margin-bottom: 0"
               >
+                <div class="profile">
+                  <div class="thumbnail-box">
+                    <img src="/assets/img/image-add.png" alt="프로필 썸네일" />
+                  </div>
+
+                  <label>프로필 이미지 추가</label>
+
+                  <input
+                    type="file"
+                    id="profile-img"
+                    accept="image/*"
+                    style="display: none"
+                    name="profileImage"
+                  />
+                </div>
                 <table
                   style="
                     cellpadding: 0;
@@ -209,7 +247,11 @@ uri="http://java.sun.com/jsp/jstl/core" %>
                     </td>
                   </tr>
                 </table>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                <input
+                  type="hidden"
+                  name="${_csrf.parameterName}"
+                  value="${_csrf.token}"
+                />
               </form>
             </div>
           </div>
@@ -218,5 +260,37 @@ uri="http://java.sun.com/jsp/jstl/core" %>
     </div>
 
     <script type="module" src="/assets/js/signUp.js"></script>
+
+    <script>
+      // 프로필 업로드 관련 스크립트
+      const $profile = document.querySelector('.profile');
+      const $fileInput = document.getElementById('profile-img');
+
+      // 이미지 영역을 클릭하면 input type=file을 클릭한 것과 동일한 효과를 내자.
+      $profile.onclick = (e) => {
+        $fileInput.click();
+      };
+
+      // 프로필 사진 첨부 시 썸네일 보여주기
+      $fileInput.onchange = (e) => {
+        // 사용자가 첨부한 파일 데이터 읽기
+        const fileData = $fileInput.files[0];
+        console.log(fileData);
+
+        // 첨부파일의 바이트데이터를 읽어들이는 객체 생성
+        const reader = new FileReader();
+
+        // 파일의 바이트데이터를 읽어서 img태그의 src속성에 넣으려면
+        // url형태로 전달해야 하는데, 이걸 처리하는 함수를 사용.
+        reader.readAsDataURL(fileData);
+
+        // 파일 리더 객체가 로딩이 끝났다면 이벤트를 발생시켜서
+        // img 태그에 이미지를 세팅
+        reader.onloadend = (e) => {
+          const $img = document.querySelector('.thumbnail-box img');
+          $img.setAttribute('src', reader.result);
+        };
+      };
+    </script>
   </body>
 </html>
