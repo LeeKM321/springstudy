@@ -66,7 +66,9 @@ public class MemberController {
                          RedirectAttributes ra,
                          HttpServletResponse response,
                          HttpServletRequest request) {
-        LoginResult result = memberService.authenticate(dto);
+
+        // 자동 로그인 서비스를 추가하기 위해 세션과 응답객체도 함께 전달.
+        LoginResult result = memberService.authenticate(dto, request.getSession(), response);
         // redirect에서 데이터를 일회성으로 전달할 때 사용하는 메서드.
         ra.addFlashAttribute("result", result);
 

@@ -33,6 +33,10 @@ public class Member {
 
     private Auth auth;
     private LocalDateTime regDate;
+
+    // 새롭게 추가된 컬럼에 맞게 필드를 추가 (자동 로그인)
+    private String sessionId;
+    private LocalDateTime limitTime;
 }
 
 

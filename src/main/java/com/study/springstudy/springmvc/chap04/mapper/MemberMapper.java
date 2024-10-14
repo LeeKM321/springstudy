@@ -1,5 +1,6 @@
 package com.study.springstudy.springmvc.chap04.mapper;
 
+import com.study.springstudy.springmvc.chap04.dto.request.AutoLoginDto;
 import com.study.springstudy.springmvc.chap04.entity.Member;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +18,20 @@ public interface MemberMapper {
     // 회원 정보 개별 조회
     Member findOne(String account);
 
+    // 자동 로그인 세션 아이디, 만료시간 업데이트
+    void saveAutoLogin(AutoLoginDto dto);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
