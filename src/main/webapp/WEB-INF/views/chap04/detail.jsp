@@ -163,43 +163,53 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           <!-- 댓글 쓰기 영역 -->
           <div class="card">
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-9">
-                  <div class="form-group">
-                    <label for="newReplyText" hidden>댓글 내용</label>
-                    <textarea
-                      rows="3"
-                      id="newReplyText"
-                      name="replyText"
-                      class="form-control"
-                      placeholder="댓글을 입력해주세요."
-                    ></textarea>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <div class="profile-box">
-                      <img src="/assets/img/anonymous.jpg" alt="프사" />
+              <c:if test="${login == null}">
+                <a href="/members/sign-in"
+                  >댓글은 로그인 후에 작성할 수 있습니다.</a
+                >
+              </c:if>
+
+              <c:if test="${login != null}">
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="form-group">
+                      <label for="newReplyText" hidden>댓글 내용</label>
+                      <textarea
+                        rows="3"
+                        id="newReplyText"
+                        name="replyText"
+                        class="form-control"
+                        placeholder="댓글을 입력해주세요."
+                      ></textarea>
                     </div>
-                    <label for="newReplyWriter" hidden>댓글 작성자</label>
-                    <input
-                      id="newReplyWriter"
-                      name="replyWriter"
-                      type="text"
-                      class="form-control"
-                      placeholder="작성자 이름"
-                      style="margin-bottom: 6px"
-                    />
-                    <button
-                      id="replyAddBtn"
-                      type="button"
-                      class="btn btn-dark form-control"
-                    >
-                      등록
-                    </button>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <div class="profile-box">
+                        <img src="/assets/img/anonymous.jpg" alt="프사" />
+                      </div>
+                      <label for="newReplyWriter" hidden>댓글 작성자</label>
+                      <input
+                        id="newReplyWriter"
+                        name="replyWriter"
+                        type="text"
+                        class="form-control"
+                        placeholder="작성자 이름"
+                        style="margin-bottom: 6px"
+                        value="${login.name}"
+                        readonly
+                      />
+                      <button
+                        id="replyAddBtn"
+                        type="button"
+                        class="btn btn-dark form-control"
+                      >
+                        등록
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </c:if>
             </div>
           </div>
           <!-- end reply write -->
@@ -279,6 +289,10 @@ uri="http://java.sun.com/jsp/jstl/core" %>
     <script>
       const URL = '/api/v1/replies'; // 댓글과 관련된 요청 url을 전역화.
       const bno = '${b.boardNo}';
+
+      const currentAccount = '${login.account}'; // 로그인중인 사람 계정
+      const auth = '${login.auth}'; // 로그인 한 사람 권한
+
       const $addBtn = document.getElementById('replyAddBtn');
 
       // 화면에 댓글 태그들을 렌더링하는 함수
@@ -291,7 +305,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         if (replies !== null && replies.length > 0) {
           for (let reply of replies) {
             // 객체 디스트럭쳐링
-            const { rno, writer, text, regDate } = reply;
+            const { rno, writer, text, regDate, account } = reply;
 
             tag += `
                     <div id='replyContent' class='card-body' data-replyId='\${rno}'>
@@ -307,10 +321,13 @@ uri="http://java.sun.com/jsp/jstl/core" %>
                             <div class='col-md-9'>\${text}</div>
                             <div class='col-md-3 text-right'>
                         `;
-            tag += `
-                        <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;
-                        <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>
-                    `;
+            if (auth === '관리자회원' || currentAccount === account) {
+              tag += `
+                  <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;
+                  <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>
+              `;
+            }
+
             tag += `   </div>
                             </div>
                         </div>
