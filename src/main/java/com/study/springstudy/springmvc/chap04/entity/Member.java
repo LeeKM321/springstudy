@@ -15,15 +15,14 @@ CREATE TABLE tbl_member (
  */
 
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Member {
     private String account;

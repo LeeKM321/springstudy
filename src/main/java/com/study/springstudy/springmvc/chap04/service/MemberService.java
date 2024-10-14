@@ -8,11 +8,13 @@ import com.study.springstudy.springmvc.chap04.entity.Member;
 import com.study.springstudy.springmvc.chap04.mapper.MemberMapper;
 import com.study.springstudy.springmvc.util.LoginUtils;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -100,6 +102,20 @@ public class MemberService {
         session.setAttribute(LoginUtils.LOGIN_KEY, dto);
         // 세션 수명 설정
         session.setMaxInactiveInterval(60 * 60); // 1시간
+
+    }
+
+    public void autoLoginClear(HttpServletRequest request, HttpServletResponse response) {
+
+        Cookie c = WebUtils.getCookie(request, "auto");
+
+        // 쿠키 삭제
+        // -> 쿠키의 수명을 0으로 설정하여 다시 클라이언트에 전송 -> 자동 소멸
+        c.setMaxAge(0);
+        c.setPath("/");
+        response.addCookie(c);
+
+        // 데이터베이스에도 세션아이디와 만료시간을 정리해주자.
 
     }
 }

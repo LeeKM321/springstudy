@@ -34,6 +34,13 @@
         WHERE account = #{account}
     </update>
 
+    <select id="findByCookie" resultType="member">
+        SELECT
+            account, name, email, auth, limit_time
+        FROM tbl_member
+        WHERE session_id = #{sessionId}
+    </select>
+
 </mapper>
 
 

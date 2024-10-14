@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
 @Controller
 @RequestMapping("/members")
@@ -88,7 +89,15 @@ public class MemberController {
 
     // 로그아웃 요청 처리
     @GetMapping("/sign-out")
-    public String signOut(HttpSession session) {
+    public String signOut(HttpSession session,
+                          HttpServletRequest request,
+                          HttpServletResponse response) {
+
+        // 자동 로그인 중인지 확인
+        if (WebUtils.getCookie(request, "auto") != null) {
+            // 쿠키를 없애주고, DB 데이터도 원래대로 돌려놔야 한다.
+            memberService.autoLoginClear(request, response);
+        }
 
         // 세션에서 로그인 정보 기록 삭제
         session.removeAttribute("login");
