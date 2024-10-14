@@ -139,6 +139,15 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       <label for="content">내용</label>
       <div id="content">${b.content}</div>
       <div class="buttons">
+        <c:if test="${login != null && login.account == b.writer}">
+          <button
+            class="list-btn"
+            type="button"
+            onclick="location.href='/board/modify?boardNo=${b.boardNo}'"
+          >
+            수정
+          </button>
+        </c:if>
         <button
           class="list-btn"
           type="button"

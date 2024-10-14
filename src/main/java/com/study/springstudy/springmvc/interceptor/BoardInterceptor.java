@@ -40,7 +40,7 @@ public class BoardInterceptor implements HandlerInterceptor {
 
         // 현재 요청이 삭제 요청인지 확인
         String uri = request.getRequestURI();
-        if (uri.contains("delete")) {
+        if (uri.contains("delete") || uri.contains("modify")) {
 
             // 관리자라면? -> 삭제 통과
             if (isAdmin(session)) return true;
