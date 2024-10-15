@@ -310,13 +310,17 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         if (replies !== null && replies.length > 0) {
           for (let reply of replies) {
             // 객체 디스트럭쳐링
-            const { rno, writer, text, regDate, account } = reply;
+            const { rno, writer, text, regDate, account, profile } = reply;
 
             tag += `
                     <div id='replyContent' class='card-body' data-replyId='\${rno}'>
                         <div class='row user-block'>
                             <span class='col-md-8'>
                         `;
+
+            tag += profile
+              ? `<img class='reply-profile' src='/display\${profile}' alt='profile image' >`
+              : `<img class='reply-profile' src='/assets/img/anonymous.jpg' alt='anonymous image' >`;
 
             tag += `<b>\${writer}</b>
                             </span>

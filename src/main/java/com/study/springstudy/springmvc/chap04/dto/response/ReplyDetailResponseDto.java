@@ -20,6 +20,8 @@ public class ReplyDetailResponseDto {
     @JsonFormat(pattern = "yyyy년 MM월 dd일 HH:mm")
     private LocalDateTime regDate;
 
+    private String profile; // 프로필 경로
+
     // 엔터티를 dto로 바꾸는 생성자.
     public ReplyDetailResponseDto(Reply reply) {
         this.rno = reply.getReplyNo();
@@ -27,6 +29,7 @@ public class ReplyDetailResponseDto {
         this.writer = reply.getReplyWriter();
         this.regDate = reply.getReplyDate();
         this.account = reply.getAccount();
+        this.profile = reply.getProfileImage();
     }
 }
 
