@@ -5,6 +5,8 @@ import com.study.springstudy.springmvc.chap04.dto.request.SignUpRequestDto;
 import com.study.springstudy.springmvc.chap04.service.LoginResult;
 import com.study.springstudy.springmvc.chap04.service.MemberService;
 import com.study.springstudy.springmvc.util.FileUtils;
+import com.study.springstudy.springmvc.util.MailSenderService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +33,7 @@ public class MemberController {
     private String rootPath;
 
     private final MemberService memberService;
+    private final MailSenderService mailSenderService;
 
     // 회원가입 양식 열기
     @GetMapping("/sign-up")
@@ -65,7 +68,8 @@ public class MemberController {
 
     // 로그인 화면 요청
     @GetMapping("/sign-in")
-    public void signIn() {}
+    public void signIn() {
+    }
 
     // 로그인 검증 요청
     @PostMapping("/sign-in")
@@ -128,8 +132,14 @@ public class MemberController {
     public ResponseEntity<?> mailCheck(@RequestBody String email) {
         log.info("이메일 인증 요청 들어옴!: {}", email);
 
+        try {
+            String authNum = mailSenderService.joinMail(email);
+            return ResponseEntity.ok().body(authNum);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
-
 
 
     private void makeLoginCookie(LoginRequestDto dto, HttpServletResponse response) {

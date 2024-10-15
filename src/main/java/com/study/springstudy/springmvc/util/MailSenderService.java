@@ -19,14 +19,14 @@ public class MailSenderService {
     // 난수 발생 메서드
     private int makeRandomNumber() {
         // 난수의 범위: 111111 ~ 999999
-        int checkNum = (int) ((Math.random()*999999) + 111111);
+        int checkNum = (int) ((Math.random() * 999999) + 111111);
         log.info("인증번호: {}", checkNum);
         return checkNum;
     }
 
     // 가입할 회원에게 전송할 이메일 양식 준비
     // 이 메서드를 컨트롤러가 호출할 겁니다.
-    public String joinMail(String email) { // 컨트롤러로부터 이메일을 전달받음.
+    public String joinMail(String email) throws MessagingException { // 컨트롤러로부터 이메일을 전달받음.
         int authNum = makeRandomNumber();
         String setFrom = "stephen4951@gmail.com"; // 발신용 이메일 주소(properties랑 똑같아야 함!)
         String toMail = email; // 수신받을 이메일 (가입하고자 하는 사람의 이메일)
@@ -35,6 +35,7 @@ public class MailSenderService {
                 "<br><br>" +
                 "인증 번호는 <strong>" + authNum + "</strong> 입니다. <br>" +
                 "해당 인증 번호를 인증번호 확인란에 기입해 주세요."; // 이메일에 삽입할 내용 (더 꾸며보세요)
+
 
         mailSend(setFrom, toMail, title, content);
 
@@ -57,7 +58,7 @@ public class MailSenderService {
         helper.setTo(toMail);
         helper.setSubject(title);
 
-        // 내용 채우기 (true를 전송하면 html이 포함되어 있다.)
+        // 내용 채우기 (true를 전송하면 html이 포함되어 있다. 값을 안주면 단순 텍스트로만 전달됨.)
         helper.setText(content, true);
 
         // 메일 전송
