@@ -117,6 +117,19 @@ public class MemberController {
         return "redirect:/";
     }
 
+    // 연습용 이메일 폼 화면
+    @GetMapping("/email")
+    public String emailForm() {
+        return "email/email-form";
+    }
+
+    @PostMapping("/email")
+    @ResponseBody
+    public ResponseEntity<?> mailCheck(@RequestBody String email) {
+        log.info("이메일 인증 요청 들어옴!: {}", email);
+
+    }
+
 
 
     private void makeLoginCookie(LoginRequestDto dto, HttpServletResponse response) {
