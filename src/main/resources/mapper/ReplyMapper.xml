@@ -13,7 +13,7 @@
 
     <select id="findAll" resultType="reply">
         SELECT
-            A.*, B.profile_image
+            A.*, B.profile_image, B.login_method
         FROM tbl_reply A
         LEFT JOIN tbl_member B
         ON A.account = B.account

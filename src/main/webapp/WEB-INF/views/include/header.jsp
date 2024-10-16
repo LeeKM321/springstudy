@@ -17,7 +17,14 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
       </c:if>
 
       <c:if test="${login != null && login.profile != null}">
-        <img src="/display${login.profile}" alt="프사">
+        <c:choose>
+          <c:when test="${login.loginMethod == 'COMMON'}">
+            <img src="/display${login.profile}" alt="프사">
+          </c:when>
+          <c:otherwise>
+            <img src="${login.profile}" alt="프사">
+          </c:otherwise>
+        </c:choose>
       </c:if>
     </div>
 

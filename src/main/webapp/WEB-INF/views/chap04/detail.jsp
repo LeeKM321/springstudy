@@ -190,7 +190,14 @@ uri="http://java.sun.com/jsp/jstl/core" %>
                           <img src="/assets/img/anonymous.jpg" alt="프사" />
                         </c:if>
                         <c:if test="${login.profile != null}">
-                          <img src="/display${login.profile}" alt="프사" />
+                          <c:choose>
+                            <c:when test="${login.loginMethod == 'COMMON'}">
+                              <img src="/display${login.profile}" alt="프사">
+                            </c:when>
+                            <c:otherwise>
+                              <img src="${login.profile}" alt="프사">
+                            </c:otherwise>
+                          </c:choose>
                         </c:if>
                       </div>
                       <label for="newReplyWriter" hidden>댓글 작성자</label>
@@ -310,17 +317,26 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         if (replies !== null && replies.length > 0) {
           for (let reply of replies) {
             // 객체 디스트럭쳐링
-            const { rno, writer, text, regDate, account, profile } = reply;
+            const { rno, writer, text, regDate, account, profile, loginMethod } = reply;
 
             tag += `
                     <div id='replyContent' class='card-body' data-replyId='\${rno}'>
                         <div class='row user-block'>
                             <span class='col-md-8'>
                         `;
+            
+            let profileTag = '';
+            if (profile) {
+              if (loginMethod.trim() === 'COMMON') {
+                profileTag += `<img class='reply-profile' src='/display\${profile}' alt='profile image' >`
+              } else {
+                profileTag += `<img class='reply-profile' src='\${profile}' alt='profile image' >`
+              }
+            } else {
+              profileTag += `<img class='reply-profile' src='/assets/img/anonymous.jpg' alt='profile image' >`
+            }
 
-            tag += profile
-              ? `<img class='reply-profile' src='/display\${profile}' alt='profile image' >`
-              : `<img class='reply-profile' src='/assets/img/anonymous.jpg' alt='anonymous image' >`;
+            tag += profileTag;
 
             tag += `<b>\${writer}</b>
                             </span>

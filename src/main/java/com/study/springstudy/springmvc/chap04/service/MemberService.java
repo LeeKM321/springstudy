@@ -96,6 +96,7 @@ public class MemberService {
                 .email(foundMember.getEmail())
                 .auth(foundMember.getAuth().getDesc())
                 .profile(foundMember.getProfileImage()) // 프사 경로를 세션 데이터에 추가.
+                .loginMethod(foundMember.getLoginMethod().toString())
                 .build();
 
         // 세션에 로그인 한 회원 정보를 저장

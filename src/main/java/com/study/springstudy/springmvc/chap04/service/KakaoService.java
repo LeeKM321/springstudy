@@ -2,6 +2,7 @@ package com.study.springstudy.springmvc.chap04.service;
 
 import com.study.springstudy.springmvc.chap04.dto.request.SignUpRequestDto;
 import com.study.springstudy.springmvc.chap04.dto.response.KakaoUserResponseDTO;
+import com.study.springstudy.springmvc.chap04.entity.Member;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,13 +45,13 @@ public class KakaoService {
                             .password(UUID.randomUUID().toString())
                             .name(kakaoUser.getProperties().getNickname())
                             .email(kakaoUser.getAccount().getEmail())
+                            .loginMethod(Member.LoginMethod.KAKAO)
                     .build(),
                     kakaoUser.getProperties().getProfileImage());
 
-            // 우리 사이트 로그인 처리
-            memberService.maintainLoginState(session, String.valueOf(kakaoUser.getId()));
-
         }
+        // 우리 사이트 로그인 처리
+        memberService.maintainLoginState(session, String.valueOf(kakaoUser.getId()));
 
     }
 

@@ -51,7 +51,9 @@ public class Reply {
     @Setter
     private String account;
 
+    // 조인 필드
     private String profileImage; // member 테이블과 조인을 위해서 추가.
+    private String loginMethod; // 댓글 작성자의 로그인 방식을 얻기
 
 }
 

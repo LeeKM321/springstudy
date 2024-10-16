@@ -6,9 +6,9 @@
 
     <insert id="save">
         INSERT INTO tbl_member
-            (account, password, name, email, profile_image)
+            (account, password, name, email, profile_image, login_method)
         VALUES
-            (#{account}, #{password}, #{name}, #{email}, #{profileImage})
+            (#{account}, #{password}, #{name}, #{email}, #{profileImage}, #{loginMethod})
     </insert>
 
     <select id="existsById" resultType="boolean">
