@@ -11,17 +11,27 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.WebUtils;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import static com.study.springstudy.springmvc.chap04.service.LoginResult.*;
 import static com.study.springstudy.springmvc.util.LoginUtils.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberMapper memberMapper;
@@ -126,6 +136,34 @@ public class MemberService {
                         .account(getCurrentLoginMemberAccount(request.getSession()))
                         .build()
         );
+
+    }
+
+    public void kakaoLogout(LoginUserResponseDTO dto, HttpSession session) {
+
+        String requestUri = "https://kapi.kakao.com/v1/user/logout";
+
+        String accessToken = (String) session.getAttribute("access_token");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+
+        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+        params.add("target_id_type", "user_id");
+        params.add("target_id", dto.getAccount());
+
+        ResponseEntity<Map> responseEntity = new RestTemplate().exchange(
+                requestUri,
+                HttpMethod.POST,
+                new HttpEntity<>(params, headers),
+                Map.class
+        );
+
+        Map<String, Object> body = responseEntity.getBody();
+        log.info("응답 데이터: {}", body); // 로그아웃하는 사용자의 id
+
+        // 전달된 id를 활용해서, 만약 access token을 DB에 저장한 경우에는
+        // update문 활용해서 처리 해주시면 됩니다.
 
     }
 }

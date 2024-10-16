@@ -2,10 +2,12 @@ package com.study.springstudy.springmvc.chap04.controller;
 
 import com.study.springstudy.springmvc.chap04.dto.request.LoginRequestDto;
 import com.study.springstudy.springmvc.chap04.dto.request.SignUpRequestDto;
+import com.study.springstudy.springmvc.chap04.dto.response.LoginUserResponseDTO;
 import com.study.springstudy.springmvc.chap04.entity.Member;
 import com.study.springstudy.springmvc.chap04.service.LoginResult;
 import com.study.springstudy.springmvc.chap04.service.MemberService;
 import com.study.springstudy.springmvc.util.FileUtils;
+import com.study.springstudy.springmvc.util.LoginUtils;
 import com.study.springstudy.springmvc.util.MailSenderService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
+import static com.study.springstudy.springmvc.util.LoginUtils.*;
+
 @Controller
 @RequestMapping("/members")
 @RequiredArgsConstructor
@@ -32,6 +36,10 @@ public class MemberController {
 
     @Value("${file.upload.root-path}")
     private String rootPath;
+    @Value("${sns.kakao.app-key}")
+    private String appKey;
+    @Value("${sns.kakao.logout-redirect}")
+    private String logoutRedirect;
 
     private final MemberService memberService;
     private final MailSenderService mailSenderService;
@@ -114,6 +122,21 @@ public class MemberController {
         if (WebUtils.getCookie(request, "auto") != null) {
             // 쿠키를 없애주고, DB 데이터도 원래대로 돌려놔야 한다.
             memberService.autoLoginClear(request, response);
+        }
+
+        // sns 로그인 상태인지를 확인
+        LoginUserResponseDTO dto
+                = (LoginUserResponseDTO) session.getAttribute(LOGIN_KEY);
+
+        if (dto.getLoginMethod().equals("KAKAO")) {
+            memberService.kakaoLogout(dto, session);
+            /*
+            String reqUri = "https://kauth.kakao.com/oauth/logout";
+            reqUri += "?client_id=" + appKey;
+            reqUri += "&logout_redirect_uri=" + logoutRedirect;
+
+            return "redirect:" + reqUri;
+             */
         }
 
         // 세션에서 로그인 정보 기록 삭제

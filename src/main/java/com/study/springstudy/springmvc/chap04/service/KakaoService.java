@@ -29,6 +29,7 @@ public class KakaoService {
     public void login(Map<String, String> params, HttpSession session) {
 
         String accessToken = getKakaoAccessToken(params);
+        session.setAttribute("access_token", accessToken);
 
         // 발급받은 액세스 토큰으로 사용자 정보 가져오기
         KakaoUserResponseDTO kakaoUser = getKakaoUserInfo(accessToken);

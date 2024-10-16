@@ -33,6 +33,7 @@ public class KakaoLoginController {
         uri += "?client_id=" + kakaoAppKey;
         uri += "&redirect_uri=" + kakaoRedirectUri;
         uri += "&response_type=code";
+        uri += "&prompt=login"; // 항상 카카오 계정 로그인 화면이 나오도록 요청
 
         return "redirect:" + uri;
     }
